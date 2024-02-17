@@ -16,8 +16,8 @@ class Canvas {
     }
 
     static resize() {
-        Canvas.canvas.width = Canvas.width = Canvas.canvas.clientWidth / 4;
-        Canvas.canvas.height = Canvas.height = Canvas.canvas.clientHeight / 4;
+        Canvas.canvas.width = Canvas.width = Canvas.canvas.clientWidth / 2;
+        Canvas.canvas.height = Canvas.height = Canvas.canvas.clientHeight / 2;
     }
 
     static clear() {
@@ -29,6 +29,8 @@ let xx = 0;
 let yy = 0;
 
 let ctx = Canvas.init("#canvas");
+
+let userFunction = "";
 
 function random(min, max) {
     return Math.round(Math.random() * (max - min) + min);
@@ -45,10 +47,17 @@ function paintPixel() {
 
     if (yy > Canvas.height) yy = 0;
     
-    ctx.fillStyle = `#${x^y|x + performance.now() / 100}`;
-
+    try{
+        ctx.fillStyle = `#${eval(userFunction)}`;
+    } catch(e) {}
+        
     ctx.fillRect(xx, yy, 1, 1);
 }
+
+const inputField = document.getElementById("functionEnter");
+inputField.addEventListener("input", function(){
+    userFunction = inputField.value;
+});
 
 function main() {
     for (let i = 0; i < 10000; i++) {
@@ -56,6 +65,7 @@ function main() {
     }
 
     window.requestAnimationFrame(main);
+
 }
 
 main();
